@@ -1,0 +1,95 @@
+name: Build CoolSnesh Downloads
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Windows x64
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v6
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Show .NET SDK
+        run: dotnet --info
+
+      - name: Restore dependencies
+        run: dotnet restore .\CoolSnesh.Avalonia.sln
+
+      - name: Run tests
+        run: dotnet test .\CoolSnesh.Avalonia.sln -c Release --no-restore
+
+      - name: Build project
+        run: dotnet build .\CoolSnesh.Avalonia.csproj -c Release --no-restore
+
+      - name: Publish standalone Windows x64 application
+        shell: pwsh
+        run: |
+          dotnet publish .\CoolSnesh.Avalonia.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:EnableCompressionInSingleFile=true `
+            -o .\artifacts\publish
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "dotnet publish failed with exit code $LASTEXITCODE"
+          }
+
+      - name: Package ZIP and calculate SHA-256
+        shell: pwsh
+        run: |
+          $publishDir = ".\artifacts\publish"
+          $exe = Join-Path $publishDir "CoolSnesh Downloads.exe"
+
+          if (-not (Test-Path $exe)) {
+            Write-Host "Published files found:"
+            Get-ChildItem $publishDir -ErrorAction SilentlyContinue | Format-Table Name, Length
+            throw "Product executable was not found: $exe"
+          }
+
+          New-Item -ItemType Directory -Force -Path ".\artifacts" | Out-Null
+          $zip = ".\artifacts\CoolSneshDownloads-win-x64.zip"
+          $shaFile = ".\artifacts\CoolSneshDownloads-win-x64.sha256"
+
+          Compress-Archive `
+            -Path (Join-Path $publishDir "*") `
+            -DestinationPath $zip `
+            -CompressionLevel Optimal `
+            -Force
+
+          $hash = (Get-FileHash -Path $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          Set-Content -Path $shaFile -Value "$hash  CoolSneshDownloads-win-x64.zip" -Encoding ascii
+          Write-Host "SHA-256: $hash"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: CoolSneshDownloads-win-x64
+          path: |
+            artifacts/CoolSneshDownloads-win-x64.zip
+            artifacts/CoolSneshDownloads-win-x64.sha256
+          if-no-files-found: error
+          retention-days: 14

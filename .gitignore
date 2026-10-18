@@ -1,0 +1,39 @@
+# .NET build outputs
+**/bin/
+**/obj/
+.vs/
+TestResults/
+artifacts/
+publish/
+
+# IDE user files
+*.user
+*.suo
+*.cache
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# Logs and temporary files
+*.log
+logs/
+Logs/
+*.tmp
+*.bak
+
+# Local secrets/configs
+.env
+.env.*
+!.env.example
+secrets.json
+appsettings.Development.json
+
+# Downloaded installers and disk images
+*.msi
+*.iso
+*.exe.download
+*.part
+
+# Windows Explorer metadata
+Thumbs.db
+Desktop.ini

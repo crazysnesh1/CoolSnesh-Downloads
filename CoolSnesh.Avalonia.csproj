@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ApplicationIcon>Assets\App.ico</ApplicationIcon>
+    <!-- Product metadata: keep the internal assembly/namespace stable, but show the real app name. -->
+    <AssemblyTitle>CoolSnesh Downloads</AssemblyTitle>
+    <Product>CoolSnesh Downloads</Product>
+    <Version>1.0.0</Version>
+    <Description>CoolSnesh Downloads — каталог, загрузчик и обновлятор приложений</Description>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationManifest></ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="12.0.4" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.0.4" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.4" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\App.ico" />
+    <AvaloniaResource Include="Assets\App.png" />
+    <AvaloniaResource Include="Assets\PackageIcons\*.png" />
+    <Compile Remove="Tests\**\*.cs" />
+  </ItemGroup>
+
+  <!--
+    Preserve the internal assembly name (CoolSnesh.Avalonia) because Avalonia resource URIs
+    reference it, but also produce a user-facing executable name matching the product.
+    Copy, rather than rename, the apphost so VS Code and `dotnet run` keep working.
+  -->
+  <Target Name="CopyProductNamedBuildExecutable" AfterTargets="Build"
+          Condition="'$(OS)' == 'Windows_NT' and Exists('$(TargetDir)$(AssemblyName).exe')">
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).exe"
+          DestinationFiles="$(TargetDir)CoolSnesh Downloads.exe"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyProductNamedPublishedExecutable" AfterTargets="Publish"
+          Condition="'$(OS)' == 'Windows_NT' and Exists('$(PublishDir)$(AssemblyName).exe')">
+    <Copy SourceFiles="$(PublishDir)$(AssemblyName).exe"
+          DestinationFiles="$(PublishDir)CoolSnesh Downloads.exe"
+          SkipUnchangedFiles="true" />
+    <!-- The copied product-named apphost runs the assembly using its internal name. Keep only the branded EXE in publish. -->
+    <Delete Files="$(PublishDir)$(AssemblyName).exe"
+            Condition="Exists('$(PublishDir)CoolSnesh Downloads.exe') and '$(PublishDir)$(AssemblyName).exe' != '$(PublishDir)CoolSnesh Downloads.exe'" />
+  </Target>
+</Project>
