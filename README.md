@@ -6,7 +6,7 @@ CoolSnesh Downloads помогает находить, скачивать, ус�
 
 ## 🖼️ Скриншот
 
-[Главное окно CoolSnesh Downloads](docs/images/main-window.png)
+[Главное окно CoolSnesh Downloads](docs/images/main-window.png) 
 
 ## ⚙️ Возможности
 
