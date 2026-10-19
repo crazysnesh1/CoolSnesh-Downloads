@@ -7,7 +7,7 @@ CoolSnesh Downloads помогает находить, скачивать, ус�
 ## 🖼️ Скриншот
 
 <img width="1280" height="825" alt="image" src="https://github.com/user-attachments/assets/b3f61fec-3de8-438b-95d4-51ff0cc30be4" />
-
+https://github.com/crazysnesh1/CoolSnesh-Downloads/blob/main/docs/images/main-window.png?raw=true
 ## ⚙️ Возможности
 
 - Каталог приложений с поиском, категориями, иконками, описаниями и ссылками на сайты.
