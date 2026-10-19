@@ -11,6 +11,7 @@
 
 ## Релизы
 
+- [Заметки v1.0.1](releases/RELEASE_NOTES_V1.0.1_RU.md)
 - [Заметки v1.0.0](releases/RELEASE_NOTES_V1.0.0_RU.md)
 - [Общие заметки о релизах](releases/RELEASE_NOTES_RU.md)
 - [Сводка функций](releases/CHANGELOG_FEATURES_RU.md)

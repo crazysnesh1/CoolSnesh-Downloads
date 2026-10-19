@@ -58,6 +58,18 @@ public sealed class AppUpdateServiceTests
     }
 
     [Fact]
+    public void Version100InstallDetectsVersion101ReleaseForAutoUpdateRetest()
+    {
+        var result = AppUpdateService.EvaluateLatestRelease("1.0.0", ReleaseJson("v1.0.1"));
+
+        Assert.NotNull(result.Update);
+        Assert.Equal("1.0.0", result.Update.CurrentVersion);
+        Assert.Equal("1.0.1", result.Update.Version);
+        Assert.Equal("v1.0.1", result.Update.TagName);
+        Assert.NotNull(result.Update.ChecksumUrl);
+    }
+
+    [Fact]
     public void DoesNotOfferUpdateWhenInstalledVersionMatchesLatestRelease()
     {
         var result = AppUpdateService.EvaluateLatestRelease("0.1.1", ReleaseJson("v0.1.1"));

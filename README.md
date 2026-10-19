@@ -21,12 +21,13 @@ CoolSnesh Downloads помогает находить, скачивать, ус�
 
 ## 📦 Категории каталога
 
-В каталоге **38 приложений** в пяти категориях:
+В каталоге **39 приложений** в шести категориях:
 
 | Категория | Количество | Примеры содержимого |
 |---|---:|---|
 | Для России | 2 | Flowseal Zapret, TG WS Proxy |
-| Программы | 10 | Discord, Telegram Desktop, Notepad++, qBittorrent, Proxifier, v2rayTun, Happ, 7-Zip, WinRAR, ArtCraft Launcher |
+| VPN и Прокси | 4 | Proxifier, v2rayTun, Happ, Incy |
+| Программы | 7 | Discord, Telegram Desktop, Notepad++, qBittorrent, 7-Zip, WinRAR, ArtCraft Launcher |
 | Браузеры | 10 | Chrome, Firefox, Яндекс Браузер, Opera, Opera GX, Edge, Brave, Vivaldi, Tor Browser, LibreWolf |
 | Windows | 11 | Windows 10/11 ISO, Ventoy, Rufus, Visual C++ Redistributable, .NET Framework, .NET Desktop Runtime, NVIDIA App |
 | Игровые лаунчеры | 5 | Steam, Battle.net, Epic Games Launcher, EA app, Ubisoft Connect |

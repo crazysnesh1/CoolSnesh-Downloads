@@ -238,7 +238,7 @@ public partial class MainWindow : Window
 
         var filterGrid = new Grid { ColumnDefinitions = new ColumnDefinitions("*"), ColumnSpacing = 12, VerticalAlignment = VerticalAlignment.Center };
         var filters = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8 };
-        foreach (var category in new[] { "Все приложения", "Для России", "Программы", "Игровые лаунчеры", "Браузеры", "Windows" })
+        foreach (var category in new[] { "Все приложения", "Для России", "VPN и Прокси", "Программы", "Игровые лаунчеры", "Браузеры", "Windows" })
         {
             var button = new Button { Content = category, Padding = new Thickness(13, 8), Tag = category };
             ApplyFilterButtonStyle(button, category == _selectedCategory);

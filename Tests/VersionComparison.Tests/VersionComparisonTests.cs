@@ -66,17 +66,18 @@ public sealed class VersionComparisonTests
     public void CatalogSourceCoverageIsExplicitForInstallablePackages()
     {
         var packages = PackageCatalog.CreateDefault();
-        Assert.Equal(38, packages.Count);
+        Assert.Equal(39, packages.Count);
 
         // Download-only payloads (ISOs, runtimes and portable utilities) do not need an installed-app
         // update source. Every normal installable app should either have a latest-version source or be
         // explicitly known as an unsupported source.
         var installable = packages.Where(p => !p.IsDownloadOnly).ToList();
-        Assert.Equal(28, installable.Count);
+        Assert.Equal(29, installable.Count);
         var withSource = installable.Where(VersionResolver.HasKnownSource).Select(p => p.Name).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        Assert.Equal(24, withSource.Count);
+        Assert.Equal(25, withSource.Count);
         Assert.Contains("Discord", withSource);
         Assert.Contains("Proxifier", withSource);
+        Assert.Contains("Incy", withSource);
         Assert.Contains("Steam", withSource);
         Assert.Contains("Google Chrome", withSource);
         Assert.Contains("Opera", withSource);

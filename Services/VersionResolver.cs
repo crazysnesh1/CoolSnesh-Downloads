@@ -31,6 +31,7 @@ public static class VersionResolver
         package.Name.Equals("WinRAR", StringComparison.OrdinalIgnoreCase) ||
         package.Name.Equals("7-Zip", StringComparison.OrdinalIgnoreCase) ||
         package.Name.Equals("Discord", StringComparison.OrdinalIgnoreCase) ||
+        package.Name.Equals("Incy", StringComparison.OrdinalIgnoreCase) ||
         package.Name.Equals("Proxifier", StringComparison.OrdinalIgnoreCase) ||
         package.Name.Equals("LibreWolf", StringComparison.OrdinalIgnoreCase) ||
         package.Name.Equals("NVIDIA App", StringComparison.OrdinalIgnoreCase) ||
@@ -124,7 +125,8 @@ public static class VersionResolver
         var status = (int)httpException.StatusCode.Value;
         if (status is 408 or 425 or 429 or 500 or 502 or 503 or 504) return true;
         // GitHub's public API also reports exhausted rate limits as 403. Package repos in this catalog are public.
-        return status == 403 && (!string.IsNullOrWhiteSpace(package.Repo) || !string.IsNullOrWhiteSpace(package.VersionRepo));
+        return status == 403 && (!string.IsNullOrWhiteSpace(package.Repo) || !string.IsNullOrWhiteSpace(package.VersionRepo) ||
+            package.Name.Equals("Incy", StringComparison.OrdinalIgnoreCase));
     }
 
     private static async Task<string> ResolveLatestVersionOnceAsync(
@@ -148,6 +150,12 @@ public static class VersionResolver
         if (package.Name.Equals("NVIDIA App", StringComparison.OrdinalIgnoreCase))
         {
             var release = await BrowserDownloadResolver.ResolveNvidiaAppAsync(client, cancellationToken);
+            return release?.Version ?? UnknownVersion;
+        }
+
+        if (package.Name.Equals("Incy", StringComparison.OrdinalIgnoreCase))
+        {
+            var release = await IncyReleaseResolver.ResolveLatestAsync(client, cancellationToken);
             return release?.Version ?? UnknownVersion;
         }
 

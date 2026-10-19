@@ -120,7 +120,7 @@
                   ToolTip.Tip="Доступна новая версия CoolSnesh Downloads"
                   Click="OnAppUpdateClick" />
           <TextBlock x:Name="AppVersionLabel"
-                     Text="Версия 1.0.0"
+                     Text="Версия 1.0.1"
                      FontSize="11"
                      Foreground="#8FA1BC"
                      Margin="13,-3,0,0" />

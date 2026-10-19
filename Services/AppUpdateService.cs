@@ -60,7 +60,7 @@ public sealed class AppUpdateService : IDisposable
         // so 1.0.0 would become 1. Preserve the product version's segment count here.
         return FormatDisplayVersion(informational)
             ?? FormatDisplayVersion(assembly.GetName().Version?.ToString())
-            ?? "1.0.0";
+            ?? "1.0.1";
     }
 
     /// <summary>

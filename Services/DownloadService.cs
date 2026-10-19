@@ -34,7 +34,14 @@ public sealed class DownloadService : IDisposable
             string downloadUrl;
             string fileName;
 
-            if (package.Name.Equals("LibreWolf", StringComparison.OrdinalIgnoreCase))
+            if (package.Name.Equals("Incy", StringComparison.OrdinalIgnoreCase))
+            {
+                var release = await IncyReleaseResolver.ResolveLatestAsync(_httpClient, cancellationToken)
+                    ?? throw new InvalidOperationException("В официальном RELEASE.json INCY не найдена ссылка на установщик Windows x64.");
+                downloadUrl = release.DownloadUrl;
+                fileName = release.FileName;
+            }
+            else if (package.Name.Equals("LibreWolf", StringComparison.OrdinalIgnoreCase))
             {
                 var release = await BrowserDownloadResolver.ResolveLibreWolfAsync(_httpClient, cancellationToken)
                     ?? throw new InvalidOperationException("На официальной странице LibreWolf не найден актуальный установщик Windows x64. Открой librewolf.net/installation/windows/ и попробуй позже.");

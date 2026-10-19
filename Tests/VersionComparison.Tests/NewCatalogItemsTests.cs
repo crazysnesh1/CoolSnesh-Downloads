@@ -36,6 +36,71 @@ public sealed class NewCatalogItemsTests
     }
 
     [Fact]
+    public void Catalog_MovesProxyClientsIntoVpnAndProxyCategoryAndAddsIncy()
+    {
+        var packages = PackageCatalog.CreateDefault();
+        var vpnAndProxy = packages.Where(p => p.Category == "VPN и Прокси").ToDictionary(p => p.Name);
+
+        Assert.Equal(4, vpnAndProxy.Count);
+        Assert.Contains("Proxifier", vpnAndProxy.Keys);
+        Assert.Contains("v2rayTun", vpnAndProxy.Keys);
+        Assert.Contains("Happ", vpnAndProxy.Keys);
+        Assert.Contains("Incy", vpnAndProxy.Keys);
+        Assert.DoesNotContain(packages, p => p.Category == "Программы" &&
+            new[] { "Proxifier", "v2rayTun", "Happ", "Incy" }.Contains(p.Name));
+
+        var incy = vpnAndProxy["Incy"];
+        Assert.Equal("INCY-DEV/incy-platforms", incy.Repo);
+        Assert.Equal("https://incy.cc/#features", incy.WebsiteUrl);
+        Assert.True(VersionResolver.HasKnownSource(incy));
+    }
+
+    [Fact]
+    public void IncyReleaseResolver_ParsesOnlyDesktopWindowsX64FromReleaseManifest()
+    {
+        const string manifest = """
+        {
+          "desktop": {
+            "version": "3.9.0",
+            "windows": {
+              "x64": "https://github.com/INCY-DEV/incy-platforms/releases/download/desktop-v3.9.0/incy-windows-setup.exe",
+              "x64_portable": "https://github.com/INCY-DEV/incy-platforms/releases/download/desktop-v3.9.0/incy-windows-portable.zip"
+            }
+          },
+          "android": {
+            "version": "3.7.9",
+            "download": "https://github.com/INCY-DEV/incy-platforms/releases/download/android-v3.7.9/Incy.apk"
+          }
+        }
+        """;
+
+        var release = IncyReleaseResolver.ParseManifest(manifest);
+
+        Assert.NotNull(release);
+        Assert.Equal("3.9.0", release!.Version);
+        Assert.Equal("incy-windows-setup.exe", release.FileName);
+        Assert.EndsWith("desktop-v3.9.0/incy-windows-setup.exe", release.DownloadUrl);
+    }
+
+    [Theory]
+    [InlineData("https://example.com/incy-windows-setup.exe")]
+    [InlineData("https://github.com/INCY-DEV/incy-platforms/releases/download/desktop-v3.9.0/other.exe")]
+    [InlineData("http://github.com/INCY-DEV/incy-platforms/releases/download/desktop-v3.9.0/incy-windows-setup.exe")]
+    public void IncyReleaseResolver_RejectsUnexpectedInstallerUrls(string url)
+    {
+        var manifest = $$"""
+        {
+          "desktop": {
+            "version": "3.9.0",
+            "windows": { "x64": "{{url}}" }
+          }
+        }
+        """;
+
+        Assert.Null(IncyReleaseResolver.ParseManifest(manifest));
+    }
+
+    [Fact]
     public void GoogleDriveResolver_ExtractsSuppliedShareIds()
     {
         Assert.True(GoogleDriveDownloadResolver.TryExtractFileId(
