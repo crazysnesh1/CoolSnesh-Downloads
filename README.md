@@ -5,9 +5,8 @@
 CoolSnesh Downloads помогает находить, скачивать, устанавливать и обновлять приложения из одного окна. Проект ориентирован на простой тёмный интерфейс, проверку установленных версий и загрузку установщиков из официальных источников, где они доступны.
 
 ## 🖼️ Скриншот
-
+![Главное окно CoolSnesh Downloads]([docs/images/main-window.png](https://github.com/crazysnesh1/CoolSnesh-Downloads/blob/main/docs/images/main-window.png?raw=true))
 <img width="1280" height="825" alt="image" src="https://github.com/user-attachments/assets/b3f61fec-3de8-438b-95d4-51ff0cc30be4" />
-https://github.com/crazysnesh1/CoolSnesh-Downloads/blob/main/docs/images/main-window.png?raw=true
 ## ⚙️ Возможности
 
 - Каталог приложений с поиском, категориями, иконками, описаниями и ссылками на сайты.
